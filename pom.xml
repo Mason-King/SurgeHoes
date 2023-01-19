@@ -4,19 +4,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>SurgeHoes</groupId>
-    <artifactId>SurgeHoes</artifactId>
+    <groupId>net.skysurge</groupId>
+    <artifactId>net.skysurge</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>SurgeHoes</name>
+    <name>Net.skysurge</name>
 
-    <description>SkySurge harvester hoes plugin</description>
+    <description>SkySurge Harvester Hoe plugin</description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <url>masonking.dev</url>
+    <url>net.skysurge</url>
 
     <build>
         <plugins>
@@ -69,7 +69,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.19.2-R0.1-SNAPSHOT</version>
+            <version>1.19.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

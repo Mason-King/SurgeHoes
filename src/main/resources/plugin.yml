@@ -1,10 +1,9 @@
 name: SurgeHoes
 version: '${project.version}'
-main: surgehoes.Plugin
+main: net.skysurge.Main
 api-version: 1.19
-authors: [ mason ]
-description: SkySurge harvester hoes plugin
-website: masonking.dev
+authors: [ Mason ]
+description: SkySurge Harvester Hoe plugin
+website: net.skysurge
 commands:
-  harvester:
-    description: 'Main harvester hoe command'
+  hoe:

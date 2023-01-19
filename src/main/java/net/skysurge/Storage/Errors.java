@@ -1,4 +1,4 @@
-package surgehoes.Storage;
+package net.skysurge.Storage;
 
 public class Errors {
     public static String sqlConnectionExecute(){

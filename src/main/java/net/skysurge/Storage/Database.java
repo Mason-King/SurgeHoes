@@ -1,6 +1,7 @@
-package surgehoes.Storage;
+package net.skysurge.Storage;
 
-import surgehoes.Plugin;
+
+import net.skysurge.Main;
 
 import java.sql.Connection;
 import java.sql.Connection;
@@ -10,11 +11,11 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 
 public abstract class Database {
-    Plugin plugin;
+    Main plugin;
     Connection connection;
     // The name of the table we created back in SQLite class.
     public int tokens = 0;
-    public Database(Plugin instance){
+    public Database(Main instance){
         plugin = instance;
     }
 

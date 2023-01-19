@@ -1,6 +1,6 @@
-package surgehoes.Storage;
+package net.skysurge.Storage;
 
-import surgehoes.Plugin;
+import net.skysurge.Main;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.logging.Level;
 
 public class SQLite extends Database{
     String dbname = "Database";
-    public SQLite(Plugin instance){
+    public SQLite(Main instance){
         super(instance);
     }
 

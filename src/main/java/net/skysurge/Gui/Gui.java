@@ -1,7 +1,8 @@
-package surgehoes;
+package net.skysurge.Gui;
 
 import java.util.*;
 
+import net.skysurge.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -22,13 +23,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class Gui implements Listener {
     private final GuiPage[] pages = new GuiPage[100];
     private Map<UUID, GuiPage> viewing = new HashMap<>();
-    private final Plugin plugin;
+    private final Main plugin;
     private final Listener li;
 
     // Quantity of pages
     public int size = 0;
 
-    public Gui(Plugin plugin) {
+    public Gui(Main plugin) {
         this.plugin = plugin;
 
         // Event Listener
