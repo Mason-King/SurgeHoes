@@ -26,7 +26,7 @@ public abstract class Database {
     public void initialize(){
         connection = getSQLConnection();
         try{
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM cPlayer WHERE UUID = ?");
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM playerData WHERE UUID = ?");
             ResultSet rs = ps.executeQuery();
             close(ps,rs);
 

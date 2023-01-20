@@ -54,7 +54,7 @@ public class HoeGui {
            if(!clicked.hasItemMeta()) return;
            PersistentDataContainer dataContainer = clicked.getItemMeta().getPersistentDataContainer();
            NamespacedKey upgradeKey = new NamespacedKey(main, dataContainer.get(new NamespacedKey(main, "upgrade"), PersistentDataType.STRING));
-
+           int gems = main.getDb().getInt("playerData", "uuid", e.getWhoClicked().getUniqueId().toString(), "gems");
         });
 
         gui.show(p, 0);

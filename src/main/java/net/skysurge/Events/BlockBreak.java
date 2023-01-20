@@ -6,10 +6,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -62,6 +64,17 @@ public class BlockBreak implements Listener {
         //Just used to open the gui <3
         else if(e.getAction().equals(Action.RIGHT_CLICK_AIR)) {
             main.getHoeGui().makeGui(e.getPlayer());
+        }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e) {
+        Player p = e.getPlayer();
+        if(!main.getDb().exists("playerData", "uuid", p.getUniqueId().toString()) || !p.hasPlayedBefore()) {
+            System.out.println("Creating new player data!");
+            int gems = 0;
+            main.getDb().execute("REPLACE INTO playerData (uuid, gems) VALUES ('"+p.getUniqueId()+"', 0')");
+
         }
     }
 

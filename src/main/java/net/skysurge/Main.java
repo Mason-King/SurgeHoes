@@ -52,6 +52,7 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+        this.saveDefaultConfig();
         this.db = new SQLite(this);
         this.db.load();
         new HoeCommand(this);
