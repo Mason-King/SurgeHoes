@@ -7,3 +7,4 @@ description: SkySurge Harvester Hoe plugin
 website: net.skysurge
 commands:
   hoe:
+  gems:

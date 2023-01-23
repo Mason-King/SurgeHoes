@@ -36,7 +36,7 @@ public class HoeCommand implements CommandExecutor {
         } else if(args[0].equalsIgnoreCase("give")) {
             ItemStack hoe = new ItemStack(Material.WOODEN_HOE);
             ItemMeta itemMeta = hoe.getItemMeta();
-            itemMeta.setDisplayName(ChatUtils.color("&f&lHarvester Hoe"));
+            itemMeta.setDisplayName(ChatUtils.color("&f&lHarvester Hoe &7| (1)"));
             List<String> lore = new ArrayList<>();
 
             double percentage =  ((double) (0 / (int) (Math.pow(1, 2) * 100) * 100));

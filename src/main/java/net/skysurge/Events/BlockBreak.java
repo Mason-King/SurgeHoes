@@ -2,6 +2,7 @@ package net.skysurge.Events;
 
 import net.skysurge.Gui.HoeGui;
 import net.skysurge.Main;
+import net.skysurge.Utils.ChatUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -13,6 +14,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -50,19 +52,43 @@ public class BlockBreak implements Listener {
                         e.getPlayer().getInventory().addItem(new ItemStack(Material.SUGAR_CANE, canes.size()));
                     }
 
+                    ItemMeta im = hoe.getItemMeta();
+                    PersistentDataContainer pdc = im.getPersistentDataContainer();
+                    int level = pdc.getOrDefault(main.getLevelKey(), PersistentDataType.INTEGER, 1);
+                    int xp = pdc.getOrDefault(main.getXpKey(), PersistentDataType.INTEGER, 0);
+
+                    xp += 5;
+                    int xpNeeded = (int) (Math.pow(level, 2) * 100);
+                    if(xp >= xpNeeded) {
+                        //level up!
+                        level++;
+                        xp = 0;
+                        im.setDisplayName(ChatUtils.color("&f&lHarvester Hoe &7| ("+level+")"));
+
+                        pdc.set(main.getLevelKey(), PersistentDataType.INTEGER, level);
+
+                        e.getPlayer().sendTitle(ChatUtils.color("&b&lHoe Upgraded!"), ChatUtils.color("&7Your hoe has been upgraded to level " + level), 10, 50, 20);
+                    }
+
+                    pdc.set(main.getXpKey(), PersistentDataType.INTEGER, xp);
+                    im.setLore(generateLore(hoe, xpNeeded));
+                    hoe.setItemMeta(im);
+
                     Random rand = new Random();
                     int chance = rand.nextInt(100);
 
-                    //makes a 10% chance
-                    System.out.println(chance + " Chance!");
-                    if(chance < 100) {
-                        System.out.println(this.main.getDb().exists("playerData", "uuid", e.getPlayer().getUniqueId().toString()));
+                    //makes a 5% chance
+                    if(chance < 5) {
+                        if(this.main.getDb().exists("playerData", "uuid", e.getPlayer().getUniqueId().toString())) {
+                            this.main.getDb().execute("REPLACE into playerData (uuid, gems) VALUES ('"+ e.getPlayer().getUniqueId().toString() + "', '" + (this.main.getGemUtils().getGems(e.getPlayer()) + 1) + "')");
+                            e.getPlayer().sendMessage(ChatUtils.color("&f&lSkySurge &7| You have received 1 gem from harvesting sugar cane."));
+                        } else return;
                     }
                 } else return;
             }
         }
         //Just used to open the gui <3
-        else if(e.getAction().equals(Action.RIGHT_CLICK_AIR)) {
+        else if(e.getAction().equals(Action.RIGHT_CLICK_AIR) && e.getItem().getItemMeta().getPersistentDataContainer().has(main.getHarvesterKey(), PersistentDataType.STRING)) {
             main.getHoeGui().makeGui(e.getPlayer());
         }
     }
@@ -72,8 +98,7 @@ public class BlockBreak implements Listener {
         Player p = e.getPlayer();
         if(!main.getDb().exists("playerData", "uuid", p.getUniqueId().toString()) || !p.hasPlayedBefore()) {
             System.out.println("Creating new player data!");
-            int gems = 0;
-            main.getDb().execute("REPLACE INTO playerData (uuid, gems) VALUES ('"+p.getUniqueId()+"', 0')");
+            main.getDb().execute("INSERT INTO playerData (uuid, gems) VALUES ('"+p.getUniqueId()+"', '0')");
 
         }
     }
@@ -96,5 +121,38 @@ public class BlockBreak implements Listener {
             loc.add(0,1,0);
         }
         return blocks;
+    }
+
+    public List<String> generateLore(ItemStack stack, int xpNeeded) {
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatUtils.color("&7Harvest crops to gain gems."));
+        lore.add(ChatUtils.color("&7Use gems to upgrade your hoe"));
+        lore.add(ChatUtils.color("&7"));
+
+        PersistentDataContainer dc = stack.getItemMeta().getPersistentDataContainer();
+        double percentage =  ((double) (dc.get(main.getXpKey(), PersistentDataType.INTEGER)) / xpNeeded * 100);
+
+        lore.add(ChatUtils.color("&f&lProgress &7| "+Math.floor(percentage)+"%"));
+
+        String greenBar = "", redBar = "";
+        int bars = 50;
+        int barPercentage = 100 / bars;
+
+        while(percentage > barPercentage) { // This will execute the code below each time the entered percentage value (for example 60) is greater than the percentage for one bar.
+            percentage -= barPercentage;
+            greenBar += "|";
+            bars -= 1;
+        }
+
+        while(bars > 0) {
+            redBar += "|";
+            bars -= 1;
+        }
+
+        lore.add(ChatUtils.color("&a"+greenBar+"&c"+redBar+""));
+        lore.add(ChatUtils.color("&7"));
+        lore.add(ChatUtils.color("&7&o(( Right-click to upgrade ))"));
+
+        return lore;
     }
 }

@@ -2,6 +2,7 @@ package net.skysurge.Gui;
 
 import net.skysurge.Main;
 import net.skysurge.Utils.ChatUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -9,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.util.StringUtil;
 
 import javax.naming.Name;
 import java.util.ArrayList;
@@ -17,6 +19,10 @@ import java.util.List;
 public class HoeGui {
 
     private Main main;
+
+    private int arrowrain = 0, magmastomp = 15, xppouch = 20,blackhole = 30,autosell = 40,laser = 45,keyfinder = 50,spawnerfinder = 60, moneypouch = 70,gempouch = 80,nightfall = 100;
+    private int arrowrainPrice = 10, magmastompPrice = 15, xppouchPrice = 20,blackholePrice = 30,autosellPrice = 40,laserPrice = 45,keyfinderPrice = 50,spawnerfinderPrice = 60, moneypouchPrice = 70,gempouchPrice = 80,nightfallPrice = 100;
+
 
     public HoeGui(Main main) {
         this.main = main;
@@ -51,10 +57,40 @@ public class HoeGui {
 
         mainPage.onClick(e -> {
            ItemStack clicked = e.getCurrentItem();
+           ItemStack hoeItem = e.getWhoClicked().getItemInHand();
            if(!clicked.hasItemMeta()) return;
            PersistentDataContainer dataContainer = clicked.getItemMeta().getPersistentDataContainer();
+           PersistentDataContainer hoeContainer = hoe.getItemMeta().getPersistentDataContainer();
            NamespacedKey upgradeKey = new NamespacedKey(main, dataContainer.get(new NamespacedKey(main, "upgrade"), PersistentDataType.STRING));
-           int gems = main.getDb().getInt("playerData", "uuid", e.getWhoClicked().getUniqueId().toString(), "gems");
+           int gems = this.main.getGemUtils().getGems(p);
+           int level = hoeContainer.getOrDefault(main.getLevelKey(), PersistentDataType.INTEGER, 1);
+
+           try {
+               int requiredLevel = (int) this.getClass().getDeclaredField(upgradeKey.getKey()).get(this);
+               if(level >= requiredLevel) {
+                   //they have the right level
+                   int price = (int) this.getClass().getDeclaredField(upgradeKey.getKey() + "Price").get(this);
+                   if(gems >= price) {
+                       main.getGemUtils().removeGems(p, price);
+
+                       System.out.println(dataContainer.getKeys());
+                       int newLevel = (int) hoeContainer.get(upgradeKey, PersistentDataType.INTEGER) + 1;
+
+                       System.out.println(newLevel);
+
+                       p.sendMessage(ChatUtils.color("&f&lSkySurge &7| You have purchased 1 level of " + StringUtils.capitalize(upgradeKey.getKey())));
+                   } else {
+                       p.sendMessage(ChatUtils.color("&f&lSKySurge &7| Sorry! You do not have enough gems to purchase this enchant!"));
+                   }
+               } else {
+                   p.sendMessage(ChatUtils.color("&f&lSkySurge &7| Sorry! Your harvester hoe is not a high enough level for this!"));
+                   return;
+               }
+           } catch (NoSuchFieldException noSuchFieldException) {
+               noSuchFieldException.printStackTrace();
+           } catch (IllegalAccessException illegalAccessException) {
+               illegalAccessException.printStackTrace();
+           }
         });
 
         gui.show(p, 0);

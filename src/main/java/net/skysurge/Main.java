@@ -1,10 +1,12 @@
 package net.skysurge;
 
+import net.skysurge.Commands.GemCommand;
 import net.skysurge.Commands.HoeCommand;
 import net.skysurge.Events.BlockBreak;
 import net.skysurge.Gui.HoeGui;
 import net.skysurge.Storage.Database;
 import net.skysurge.Storage.SQLite;
+import net.skysurge.Utils.GemUtils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -47,6 +49,7 @@ public final class Main extends JavaPlugin {
     private NamespacedKey autoSellEnabledKey = new NamespacedKey(this, "autosellEnabled");
 
     private HoeGui hoeGui;
+    private GemUtils gemUtils;
     private Database db;
 
     @Override
@@ -58,6 +61,8 @@ public final class Main extends JavaPlugin {
         new HoeCommand(this);
         new BlockBreak(this);
         this.hoeGui = new HoeGui(this);
+        new GemCommand(this);
+        this.gemUtils = new GemUtils(this);
     }
 
     @Override
@@ -179,5 +184,9 @@ public final class Main extends JavaPlugin {
 
     public Database getDb() {
         return db;
+    }
+
+    public GemUtils getGemUtils() {
+        return gemUtils;
     }
 }
