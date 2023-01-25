@@ -3,8 +3,10 @@ package net.skysurge.Events;
 import net.skysurge.Gui.HoeGui;
 import net.skysurge.Main;
 import net.skysurge.Utils.ChatUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -30,6 +32,7 @@ public class BlockBreak implements Listener {
         this.main = main;
         main.getServer().getPluginManager().registerEvents(this, main);
     }
+    private String[] upgrades = {"arrow rain", "magma stomp", "xp pouch", "black hole", "autosell", "laser", "key finder", "spawner finder", "money pouch", "gem pouch", "night fall"};
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
@@ -37,7 +40,7 @@ public class BlockBreak implements Listener {
             if (e.getClickedBlock().getType().equals(Material.SUGAR_CANE)) {
                 ItemStack hoe = e.getItem();
                 //Check if it has the harvester hoe key in the PDC
-                if(hoe.getItemMeta().getPersistentDataContainer().get(main.getHarvesterKey(), PersistentDataType.STRING) == "true") {
+                 if(hoe.getItemMeta().getPersistentDataContainer().get(main.getHarvesterKey(), PersistentDataType.STRING).equals("true")) {
                     e.setCancelled(true);
                     //if they click the bottom block, no need to go further :)
                     if(isBottom(e.getClickedBlock())) return;
@@ -151,6 +154,15 @@ public class BlockBreak implements Listener {
 
         lore.add(ChatUtils.color("&a"+greenBar+"&c"+redBar+""));
         lore.add(ChatUtils.color("&7"));
+        for(String s : upgrades) {
+            NamespacedKey upgradeKey = new NamespacedKey(main, s.replace(" ", ""));
+            int level = dc.get(upgradeKey, PersistentDataType.INTEGER);
+            if(level > 0) {
+                lore.add(ChatUtils.color("&7&l| &b" + StringUtils.capitalize(s) + " &7(" + level + ")"));
+            }
+
+        }
+        lore.add("");
         lore.add(ChatUtils.color("&7&o(( Right-click to upgrade ))"));
 
         return lore;
