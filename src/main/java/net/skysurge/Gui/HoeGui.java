@@ -20,7 +20,7 @@ public class HoeGui {
 
     private Main main;
 
-    private String[] upgrades = {"arrow rain", "magma stomp", "xp pouch", "black hole", "autosell", "laser", "key finder", "spawner finder", "money pouch", "gem pouch", "night fall"};
+    private String[] upgrades = {"arrow rain", "magma stomp", "xp pouch", "autosell", "laser", "key finder", "spawner finder", "money pouch", "gem pouch", "night fall"};
     private int arrowrain = 0, magmastomp = 15, xppouch = 20,blackhole = 30,autosell = 40,laser = 45,keyfinder = 50,spawnerfinder = 60, moneypouch = 70,gempouch = 80,nightfall = 100;
     private int arrowrainPrice = 10, magmastompPrice = 15, xppouchPrice = 20,blackholePrice = 30,autosellPrice = 40,laserPrice = 45,keyfinderPrice = 50,spawnerfinderPrice = 60, moneypouchPrice = 70,gempouchPrice = 80,nightfallPrice = 100;
 
@@ -42,7 +42,7 @@ public class HoeGui {
 
         mainPage.i(11, makeItemStack(Material.REDSTONE_BLOCK, "&b&lLaser", main.getLaserKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getLaserKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 100" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
         mainPage.i(12, makeItemStack(Material.SCULK_SENSOR, "&b&lNight Fall", main.getNightFallKey(), "&7Chance to collect wither roses", "", "&b&lCurrent Level&7: " + pdc.get(main.getNightFallKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 500" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
-        mainPage.i(13, makeItemStack(Material.CRYING_OBSIDIAN, "&b&lBlack Hole", main.getBlackHoleKey(),"&7Spawns a black hole which", "&7Collects crops", "", "&b&lCurrent Level&7: " + pdc.get(main.getBlackHoleKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 100" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))" ));
+        mainPage.i(13, makeItemStack(Material.DIAMOND_HOE, "&b&lAutosell", main.getAutoSellKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getAutoSellKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 1" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
         mainPage.i(14, makeItemStack(Material.MAGMA_BLOCK, "&b&lMagma Stomp", main.getMagmaStompKey(), "&7Spawns a magma that crushes crops", "", "&b&lCurrent Level&7: " + pdc.get(main.getMagmaStompKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 200" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
         mainPage.i(15, makeItemStack(Material.ARROW, "&b&lArrow Rain", main.getArrowRainKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getArrowRainKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 500" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
         mainPage.i(20, makeItemStack(Material.GOLD_BLOCK, "&b&lMoney Pouch", main.getMoneyPouchKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getMoneyPouchKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 500" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
@@ -50,7 +50,6 @@ public class HoeGui {
         mainPage.i(22, makeItemStack(Material.EMERALD_BLOCK, "&b&lGem Pouch", main.getGemPouchKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getGemPouchKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 500" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
         mainPage.i(23, makeItemStack(Material.TRIPWIRE_HOOK, "&b&lKeyFinder", main.getKeyFinderKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getKeyFinderKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 500" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
         mainPage.i(24, makeItemStack(Material.SPAWNER, "&b&lSpawnerFinder", main.getSpawnerFinderKey(),"&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getSpawnerFinderKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 500" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))" ));
-        mainPage.i(31, makeItemStack(Material.DIAMOND_HOE, "&b&lAutosell", main.getAutoSellKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getAutoSellKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 1" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
 
         mainPage.i(49, new ItemStack(Material.BOOK));
 

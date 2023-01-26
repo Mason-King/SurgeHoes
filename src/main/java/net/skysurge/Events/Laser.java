@@ -2,13 +2,10 @@ package net.skysurge.Events;
 
 import net.skysurge.Main;
 import net.skysurge.Utils.ChatUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.MagmaCube;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -20,11 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class XpPouch implements Listener {
+public class Laser implements Listener {
 
     Main main;
 
-    public XpPouch(Main main) {
+    public Laser(Main main) {
         this.main = main;
 
         main.getServer().getPluginManager().registerEvents(this, main);
@@ -37,21 +34,16 @@ public class XpPouch implements Listener {
                 ItemStack hoe = e.getItem();
                 //Check if it has the harvester hoe key in the PDC
                 if (hoe.getItemMeta().getPersistentDataContainer().get(main.getHarvesterKey(), PersistentDataType.STRING).equals("true")) {
-                    int xppouch = hoe.getItemMeta().getPersistentDataContainer().get(main.getXpPouchKey(), PersistentDataType.INTEGER);
-                    if (xppouch == 0) return;
+                    int laser = hoe.getItemMeta().getPersistentDataContainer().get(main.getLaserKey(), PersistentDataType.INTEGER);
+                    if (laser == 0) return;
 
 
                     int chance = ThreadLocalRandom.current().nextInt(100) + 1;
 
-                    if (chance <= xppouch * 1.75) {
-                        int minXp = 1000 + (xppouch * 200);
-                        int maxXp = 5000 + (xppouch * 200);
-                        int range = maxXp - minXp;
-                        int randomizedXP = (int) (Math.random() * range) + minXp;
-
-                        e.getPlayer().sendMessage(ChatUtils.color("&f&lSkySurge &7| You have received &b&l" + randomizedXP + " &7from &b&lXp Pouch"));
-                        e.getPlayer().giveExp(randomizedXP);
-                   }
+                    //if (chance <= laser * 1.75) {
+                        Location start = e.getClickedBlock().getLocation();
+                        
+                    //}
 
                 }
             }
@@ -66,6 +58,16 @@ public class XpPouch implements Listener {
 
         return true;
     }
+
+    public boolean isBottom(Block b) {
+        Block bBelow = b.getRelative(BlockFace.DOWN);
+        if(b.getType().equals(bBelow.getType())) {
+            return false;
+        }
+
+        return true;
+    }
+
 
     public List<Block> getBlocks(Block b) {
         List<Block> blocks = new ArrayList<>();

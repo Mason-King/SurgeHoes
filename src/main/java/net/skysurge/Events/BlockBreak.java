@@ -32,7 +32,7 @@ public class BlockBreak implements Listener {
         this.main = main;
         main.getServer().getPluginManager().registerEvents(this, main);
     }
-    private String[] upgrades = {"arrow rain", "magma stomp", "xp pouch", "black hole", "autosell", "laser", "key finder", "spawner finder", "money pouch", "gem pouch", "night fall"};
+    private String[] upgrades = {"arrow rain", "magma stomp", "xp pouch", "autosell", "laser", "key finder", "spawner finder", "money pouch", "gem pouch", "night fall"};
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {

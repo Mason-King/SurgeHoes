@@ -2,9 +2,7 @@ package net.skysurge;
 
 import net.skysurge.Commands.GemCommand;
 import net.skysurge.Commands.HoeCommand;
-import net.skysurge.Events.ArrowRain;
-import net.skysurge.Events.BlockBreak;
-import net.skysurge.Events.MagmaStomp;
+import net.skysurge.Events.*;
 import net.skysurge.Gui.HoeGui;
 import net.skysurge.Storage.Database;
 import net.skysurge.Storage.SQLite;
@@ -62,6 +60,8 @@ public final class Main extends JavaPlugin {
         this.db.load();
         new ArrowRain(this);
         new MagmaStomp(this);
+        new XpPouch(this);
+        new Laser(this);
         new HoeCommand(this);
         new BlockBreak(this);
         this.hoeGui = new HoeGui(this);
