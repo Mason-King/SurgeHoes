@@ -28,7 +28,7 @@ public class Laser implements Listener {
     }
 
     @EventHandler
-    public void arrowRain(PlayerInteractEvent e) {
+    public void laser(PlayerInteractEvent e) {
         if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             if (e.getClickedBlock().getType().equals(Material.SUGAR_CANE)) {
                 ItemStack hoe = e.getItem();
@@ -40,10 +40,24 @@ public class Laser implements Listener {
 
                     int chance = ThreadLocalRandom.current().nextInt(100) + 1;
 
-                    //if (chance <= laser * 1.75) {
+                    if (chance <= laser * 0.75) {
                         Location start = e.getClickedBlock().getLocation();
-                        
-                    //}
+                        if(isBottom(start.getBlock())) return;
+                        while(start.add(e.getPlayer().getFacing().getModX(), 0, e.getPlayer().getFacing().getModZ()).getBlock().getType().equals(Material.SUGAR_CANE)) {
+                            List<Block> blocks = getBlocks(start.getBlock());
+                            for(Block b : blocks) {
+                                b.setType(Material.AIR);
+                            }
+                            if(hoe.getItemMeta().getPersistentDataContainer().has(main.getAutoSellKey(), PersistentDataType.INTEGER) && hoe.getItemMeta().getPersistentDataContainer().get(main.getAutoSellKey(), PersistentDataType.INTEGER) == 1) {
+                                //autosell enabled
+                                int sell = (main.getTask().toSell.containsKey(e.getPlayer().getUniqueId())) ? main.getTask().toSell.get(e.getPlayer().getUniqueId()) + blocks.size() : blocks.size();
+                                main.getTask().toSell.remove(e.getPlayer().getUniqueId());
+                                main.getTask().toSell.put(e.getPlayer().getUniqueId(), sell);
+                            } else {
+                                e.getPlayer().getInventory().addItem(new ItemStack(Material.SUGAR_CANE, blocks.size()));
+                            }
+                        }
+                    }
 
                 }
             }

@@ -44,14 +44,18 @@ public class BlockBreak implements Listener {
                     e.setCancelled(true);
                     //if they click the bottom block, no need to go further :)
                     if(isBottom(e.getClickedBlock())) return;
-                    if(hoe.getItemMeta().getPersistentDataContainer().has(main.getAutoSellKey(), PersistentDataType.STRING) && hoe.getItemMeta().getPersistentDataContainer().get(main.getAutoSellKey(), PersistentDataType.STRING) == "true") {
+                     List<Block> canes = getBlocks(e.getClickedBlock());
+                     for(Block b : canes) {
+                         b.setType(Material.AIR);
+                     }
+                     if(hoe.getItemMeta().getPersistentDataContainer().has(main.getAutoSellKey(), PersistentDataType.INTEGER) && hoe.getItemMeta().getPersistentDataContainer().get(main.getAutoSellKey(), PersistentDataType.INTEGER) == 1) {
                         //autosell enabled
+                        int sell = (main.getTask().toSell.containsKey(e.getPlayer().getUniqueId())) ? main.getTask().toSell.get(e.getPlayer().getUniqueId()) + canes.size() : canes.size();
+                        main.getTask().toSell.remove(e.getPlayer().getUniqueId());
+                        main.getTask().toSell.put(e.getPlayer().getUniqueId(), sell);
+                        System.out.println(sell);
                     } else {
                         //auto sell disabled
-                        List<Block> canes = getBlocks(e.getClickedBlock());
-                        for(Block b : canes) {
-                            b.setType(Material.AIR);
-                        }
                         e.getPlayer().getInventory().addItem(new ItemStack(Material.SUGAR_CANE, canes.size()));
                     }
 

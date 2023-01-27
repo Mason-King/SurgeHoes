@@ -35,7 +35,7 @@ public class MagmaStomp implements Listener {
     }
 
     @EventHandler
-    public void arrowRain(PlayerInteractEvent e) {
+    public void magmaStomp(PlayerInteractEvent e) {
         if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             if (e.getClickedBlock().getType().equals(Material.SUGAR_CANE)) {
                 ItemStack hoe = e.getItem();
@@ -46,7 +46,7 @@ public class MagmaStomp implements Listener {
 
                     int chance = ThreadLocalRandom.current().nextInt(100) + 1;
 
-                    //if (chance <= magmastomp * 1.75) {
+                    if (chance <= magmastomp * 0.75) {
                         MagmaCube magmaCube = (MagmaCube) e.getPlayer().getLocation().getWorld().spawnEntity(e.getPlayer().getLocation().add(0, 5, 0), EntityType.MAGMA_CUBE);
                         magmaCube.setSize(5);
                         UUID u = UUID.randomUUID();
@@ -68,7 +68,7 @@ public class MagmaStomp implements Listener {
                                 }
                             }
                         }, 200L);
-                    //}
+                    }
 
                 }
             }

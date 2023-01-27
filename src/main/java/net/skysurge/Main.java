@@ -1,5 +1,8 @@
 package net.skysurge;
 
+import net.milkbowl.vault.chat.Chat;
+import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 import net.skysurge.Commands.GemCommand;
 import net.skysurge.Commands.HoeCommand;
 import net.skysurge.Events.*;
@@ -7,7 +10,9 @@ import net.skysurge.Gui.HoeGui;
 import net.skysurge.Storage.Database;
 import net.skysurge.Storage.SQLite;
 import net.skysurge.Utils.GemUtils;
+import net.skysurge.task.SellTask;
 import org.bukkit.NamespacedKey;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Main extends JavaPlugin {
@@ -52,26 +57,65 @@ public final class Main extends JavaPlugin {
     private GemUtils gemUtils;
     private Database db;
 
+    private Economy econ = null;
+    private Permission perms = null;
+    private Chat chat = null;
+
+    private SellTask task;
+
     @Override
     public void onEnable() {
         // Plugin startup logic
         this.saveDefaultConfig();
         this.db = new SQLite(this);
         this.db.load();
+
+        this.task = new SellTask(this);
+
+        if (!setupEconomy() ) {
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+        setupPermissions();
+        setupChat();
+
         new ArrowRain(this);
         new MagmaStomp(this);
         new XpPouch(this);
+        new MoneyPouch(this);
+        new GemPouch(this);
         new Laser(this);
         new HoeCommand(this);
         new BlockBreak(this);
         this.hoeGui = new HoeGui(this);
         new GemCommand(this);
         this.gemUtils = new GemUtils(this);
+
+        this.task.runTaskTimer(this, 0, 20 * 60 * 2);
     }
 
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
+    }
+
+    private boolean setupChat() {
+        RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
+        chat = rsp.getProvider();
+        return chat != null;
+    }
+
+    private boolean setupPermissions() {
+        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
+        perms = rsp.getProvider();
+        return perms != null;
     }
 
     public NamespacedKey getHarvesterKey() {
@@ -192,5 +236,21 @@ public final class Main extends JavaPlugin {
 
     public GemUtils getGemUtils() {
         return gemUtils;
+    }
+
+    public Economy getEcon() {
+        return econ;
+    }
+
+    public Permission getPerms() {
+        return perms;
+    }
+
+    public Chat getChat() {
+        return chat;
+    }
+
+    public SellTask getTask() {
+        return task;
     }
 }

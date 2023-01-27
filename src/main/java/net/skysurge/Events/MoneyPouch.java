@@ -2,13 +2,10 @@ package net.skysurge.Events;
 
 import net.skysurge.Main;
 import net.skysurge.Utils.ChatUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.MagmaCube;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -20,37 +17,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class XpPouch implements Listener {
+public class MoneyPouch implements Listener {
 
     Main main;
 
-    public XpPouch(Main main) {
+    public MoneyPouch(Main main) {
         this.main = main;
 
         main.getServer().getPluginManager().registerEvents(this, main);
     }
 
     @EventHandler
-    public void xpPouch(PlayerInteractEvent e) {
+    public void moneyPouch(PlayerInteractEvent e) {
         if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             if (e.getClickedBlock().getType().equals(Material.SUGAR_CANE)) {
                 ItemStack hoe = e.getItem();
                 //Check if it has the harvester hoe key in the PDC
                 if (hoe.getItemMeta().getPersistentDataContainer().get(main.getHarvesterKey(), PersistentDataType.STRING).equals("true")) {
-                    int xppouch = hoe.getItemMeta().getPersistentDataContainer().get(main.getXpPouchKey(), PersistentDataType.INTEGER);
-                    if (xppouch == 0) return;
+                    int moneyPouch = hoe.getItemMeta().getPersistentDataContainer().get(main.getMoneyPouchKey(), PersistentDataType.INTEGER);
+                    if (moneyPouch == 0) return;
 
 
                     int chance = ThreadLocalRandom.current().nextInt(100) + 1;
 
-                    if (chance <= xppouch * 0.75) {
-                        int minXp = 1000 + (xppouch * 200);
-                        int maxXp = 5000 + (xppouch * 200);
+                    if (chance <= moneyPouch * 0.75) {
+                        int minXp = 1000 + (moneyPouch * 400);
+                        int maxXp = 5000 + (moneyPouch * 400);
                         int range = maxXp - minXp;
                         int randomizedXP = (int) (Math.random() * range) + minXp;
 
-                        e.getPlayer().sendMessage(ChatUtils.color("&f&lSkySurge &7| You have received &b&l" + randomizedXP + " &7from &b&lXp Pouch"));
-                        e.getPlayer().giveExp(randomizedXP);
+                        e.getPlayer().sendMessage(ChatUtils.color("&f&lSkySurge &7| You have received &b&l$" + randomizedXP + " &7from &b&lMoney Pouch"));
+                        main.getEcon().depositPlayer(e.getPlayer(), randomizedXP);
                    }
 
                 }

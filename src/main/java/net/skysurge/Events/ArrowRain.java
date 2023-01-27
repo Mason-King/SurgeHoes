@@ -45,7 +45,7 @@ public class ArrowRain implements Listener {
                     int chance = ThreadLocalRandom.current().nextInt(100) + 1;
 
 //                    if(chance <= arrowrain * 1.75) {
-                        spawnArrows(e.getPlayer());
+                        spawnArrows(hoe, e.getPlayer());
                     //}
                 }
             }
@@ -55,7 +55,7 @@ public class ArrowRain implements Listener {
     private final int NUM_ARROWS = 15;
     private final int RADIUS = 10;
 
-    public void spawnArrows(Player player) {
+    public void spawnArrows(ItemStack hoe, Player player) {
         Location playerLoc = player.getLocation();
         Random rand = new Random();
         List<Location> arrowLocations = new ArrayList<>();
@@ -81,7 +81,14 @@ public class ArrowRain implements Listener {
                     for(Block bl : canes) {
                         bl.setType(Material.AIR);
                     }
-                    player.getInventory().addItem(new ItemStack(Material.SUGAR_CANE, canes.size()));
+                    if(hoe.getItemMeta().getPersistentDataContainer().has(main.getAutoSellKey(), PersistentDataType.INTEGER) && hoe.getItemMeta().getPersistentDataContainer().get(main.getAutoSellKey(), PersistentDataType.INTEGER) == 1) {
+                        //autosell enabled
+                        int sell = (main.getTask().toSell.containsKey(player.getUniqueId())) ? main.getTask().toSell.get(player.getUniqueId()) + canes.size() : canes.size();
+                        main.getTask().toSell.remove(player.getUniqueId());
+                        main.getTask().toSell.put(player.getUniqueId(), sell);
+                    } else {
+                        player.getInventory().addItem(new ItemStack(Material.SUGAR_CANE, canes.size()));
+                    }
                 }
             }
         }

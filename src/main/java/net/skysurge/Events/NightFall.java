@@ -2,13 +2,10 @@ package net.skysurge.Events;
 
 import net.skysurge.Main;
 import net.skysurge.Utils.ChatUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.MagmaCube;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -18,40 +15,36 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class XpPouch implements Listener {
+public class NightFall implements Listener {
 
     Main main;
 
-    public XpPouch(Main main) {
+    public NightFall(Main main) {
         this.main = main;
 
         main.getServer().getPluginManager().registerEvents(this, main);
     }
 
     @EventHandler
-    public void xpPouch(PlayerInteractEvent e) {
+    public void nightFall(PlayerInteractEvent e) {
         if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             if (e.getClickedBlock().getType().equals(Material.SUGAR_CANE)) {
                 ItemStack hoe = e.getItem();
                 //Check if it has the harvester hoe key in the PDC
                 if (hoe.getItemMeta().getPersistentDataContainer().get(main.getHarvesterKey(), PersistentDataType.STRING).equals("true")) {
-                    int xppouch = hoe.getItemMeta().getPersistentDataContainer().get(main.getXpPouchKey(), PersistentDataType.INTEGER);
-                    if (xppouch == 0) return;
+                    int nightFall = hoe.getItemMeta().getPersistentDataContainer().get(main.getNightFallKey(), PersistentDataType.INTEGER);
+                    if (nightFall == 0) return;
 
 
                     int chance = ThreadLocalRandom.current().nextInt(100) + 1;
 
-                    if (chance <= xppouch * 0.75) {
-                        int minXp = 1000 + (xppouch * 200);
-                        int maxXp = 5000 + (xppouch * 200);
-                        int range = maxXp - minXp;
-                        int randomizedXP = (int) (Math.random() * range) + minXp;
-
-                        e.getPlayer().sendMessage(ChatUtils.color("&f&lSkySurge &7| You have received &b&l" + randomizedXP + " &7from &b&lXp Pouch"));
-                        e.getPlayer().giveExp(randomizedXP);
-                   }
+                    //if (chance <= nightFall * 0.75) {
+                        ItemStack stack = new ItemStack(Material.WITHER_ROSE, new Random().nextInt(1, 3));
+                        e.getPlayer().getInventory().addItem(stack);
+                   //}
 
                 }
             }
