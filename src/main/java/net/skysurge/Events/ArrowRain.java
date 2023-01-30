@@ -44,9 +44,9 @@ public class ArrowRain implements Listener {
 
                     int chance = ThreadLocalRandom.current().nextInt(100) + 1;
 
-//                    if(chance <= arrowrain * 1.75) {
+                    if(chance <= arrowrain * 1.75) {
                         spawnArrows(hoe, e.getPlayer());
-                    //}
+                    }
                 }
             }
         }

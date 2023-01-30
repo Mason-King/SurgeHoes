@@ -59,13 +59,15 @@ public class BlockBreak implements Listener {
                         e.getPlayer().getInventory().addItem(new ItemStack(Material.SUGAR_CANE, canes.size()));
                     }
 
+                     main.getCaptchaGui().makeGui(e.getPlayer());
+
                     ItemMeta im = hoe.getItemMeta();
                     PersistentDataContainer pdc = im.getPersistentDataContainer();
                     int level = pdc.getOrDefault(main.getLevelKey(), PersistentDataType.INTEGER, 1);
                     int xp = pdc.getOrDefault(main.getXpKey(), PersistentDataType.INTEGER, 0);
 
                     xp += 5;
-                    int xpNeeded = (int) (Math.pow(level, 2) * 100);
+                    int xpNeeded = (int) (Math.pow(level, 2) * 1000);
                     if(xp >= xpNeeded) {
                         //level up!
                         level++;

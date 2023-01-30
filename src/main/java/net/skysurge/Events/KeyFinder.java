@@ -1,7 +1,6 @@
 package net.skysurge.Events;
 
 import net.skysurge.Main;
-import net.skysurge.Utils.ChatUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,35 +14,33 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class NightFall implements Listener {
+public class KeyFinder implements Listener {
 
     Main main;
 
-    public NightFall(Main main) {
+    public KeyFinder(Main main) {
         this.main = main;
 
         main.getServer().getPluginManager().registerEvents(this, main);
     }
 
     @EventHandler
-    public void nightFall(PlayerInteractEvent e) {
+    public void keyFinder(PlayerInteractEvent e) {
         if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             if (e.getClickedBlock().getType().equals(Material.SUGAR_CANE)) {
                 ItemStack hoe = e.getItem();
                 //Check if it has the harvester hoe key in the PDC
                 if (hoe.getItemMeta().getPersistentDataContainer().get(main.getHarvesterKey(), PersistentDataType.STRING).equals("true")) {
-                    int nightFall = hoe.getItemMeta().getPersistentDataContainer().get(main.getNightFallKey(), PersistentDataType.INTEGER);
-                    if (nightFall == 0) return;
+                    int keyFinder = hoe.getItemMeta().getPersistentDataContainer().get(main.getKeyFinderKey(), PersistentDataType.INTEGER);
+                    if (keyFinder == 0) return;
 
 
                     int chance = ThreadLocalRandom.current().nextInt(100) + 1;
 
-                    if (chance <= nightFall * 0.75) {
-                        ItemStack stack = new ItemStack(Material.WITHER_ROSE, ThreadLocalRandom.current().nextInt(1, 3));
-                        e.getPlayer().getInventory().addItem(stack);
+                    if (chance <= keyFinder * 0.75) {
+                        //run the command to give a spawner crate thingy
                    }
 
                 }

@@ -6,6 +6,7 @@ import net.milkbowl.vault.permission.Permission;
 import net.skysurge.Commands.GemCommand;
 import net.skysurge.Commands.HoeCommand;
 import net.skysurge.Events.*;
+import net.skysurge.Gui.CaptchaGui;
 import net.skysurge.Gui.HoeGui;
 import net.skysurge.Storage.Database;
 import net.skysurge.Storage.SQLite;
@@ -54,6 +55,7 @@ public final class Main extends JavaPlugin {
     private NamespacedKey autoSellEnabledKey = new NamespacedKey(this, "autosellEnabled");
 
     private HoeGui hoeGui;
+    private CaptchaGui captchaGui;
     private GemUtils gemUtils;
     private Database db;
 
@@ -85,9 +87,11 @@ public final class Main extends JavaPlugin {
         new MoneyPouch(this);
         new GemPouch(this);
         new Laser(this);
+        new NightFall(this);
         new HoeCommand(this);
         new BlockBreak(this);
         this.hoeGui = new HoeGui(this);
+        this.captchaGui = new CaptchaGui(this);
         new GemCommand(this);
         this.gemUtils = new GemUtils(this);
 
@@ -252,5 +256,9 @@ public final class Main extends JavaPlugin {
 
     public SellTask getTask() {
         return task;
+    }
+
+    public CaptchaGui getCaptchaGui() {
+        return captchaGui;
     }
 }

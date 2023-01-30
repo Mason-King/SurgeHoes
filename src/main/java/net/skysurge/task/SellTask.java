@@ -4,7 +4,6 @@ import net.minecraft.network.chat.IChatBaseComponent;
 import net.skysurge.Main;
 import net.skysurge.Utils.ChatUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_19_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 

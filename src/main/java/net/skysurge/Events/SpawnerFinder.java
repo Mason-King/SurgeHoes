@@ -15,35 +15,33 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class NightFall implements Listener {
+public class SpawnerFinder implements Listener {
 
     Main main;
 
-    public NightFall(Main main) {
+    public SpawnerFinder(Main main) {
         this.main = main;
 
         main.getServer().getPluginManager().registerEvents(this, main);
     }
 
     @EventHandler
-    public void nightFall(PlayerInteractEvent e) {
+    public void spawnerFinder(PlayerInteractEvent e) {
         if (e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             if (e.getClickedBlock().getType().equals(Material.SUGAR_CANE)) {
                 ItemStack hoe = e.getItem();
                 //Check if it has the harvester hoe key in the PDC
                 if (hoe.getItemMeta().getPersistentDataContainer().get(main.getHarvesterKey(), PersistentDataType.STRING).equals("true")) {
-                    int nightFall = hoe.getItemMeta().getPersistentDataContainer().get(main.getNightFallKey(), PersistentDataType.INTEGER);
-                    if (nightFall == 0) return;
+                    int spawnerFinder = hoe.getItemMeta().getPersistentDataContainer().get(main.getSpawnerFinderKey(), PersistentDataType.INTEGER);
+                    if (spawnerFinder == 0) return;
 
 
                     int chance = ThreadLocalRandom.current().nextInt(100) + 1;
 
-                    if (chance <= nightFall * 0.75) {
-                        ItemStack stack = new ItemStack(Material.WITHER_ROSE, ThreadLocalRandom.current().nextInt(1, 3));
-                        e.getPlayer().getInventory().addItem(stack);
+                    if (chance <= spawnerFinder * 0.75) {
+                        //run the command to give a spawner crate thingy
                    }
 
                 }
