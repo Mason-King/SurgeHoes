@@ -22,7 +22,8 @@ public class HoeGui {
 
     private String[] upgrades = {"arrow rain", "magma stomp", "xp pouch", "autosell", "laser", "key finder", "spawner finder", "money pouch", "gem pouch", "night fall"};
     private int arrowrain = 0, magmastomp = 15, xppouch = 20,blackhole = 30,autosell = 40,laser = 45,keyfinder = 50,spawnerfinder = 60, moneypouch = 70,gempouch = 80,nightfall = 100;
-    private int arrowrainPrice = 10, magmastompPrice = 15, xppouchPrice = 20,blackholePrice = 30,autosellPrice = 40,laserPrice = 45,keyfinderPrice = 50,spawnerfinderPrice = 60, moneypouchPrice = 70,gempouchPrice = 80,nightfallPrice = 100;
+    private int arrowrainMax = 500, magmastompMax = 200, xppouchMax = 500,autosellMax = 1,laserMax = 100,keyfinderMax = 500,spawnerfinderMax = 500, moneypouchMax = 500,gempouchMax = 500,nightfallMax = 200;
+    private int arrowrainPrice = 10, magmastompPrice = 15, xppouchPrice = 20,autosellPrice = 40,laserPrice = 45,keyfinderPrice = 50,spawnerfinderPrice = 60, moneypouchPrice = 70,gempouchPrice = 80,nightfallPrice = 100;
 
 
     public HoeGui(Main main) {
@@ -32,7 +33,7 @@ public class HoeGui {
 
     public void makeGui(Player p) {
         Gui gui = new Gui(main);
-        Gui.NoobPage mainPage = gui.create(ChatUtils.color("&lHarvester Hoe"), 54);
+        Gui.NoobPage mainPage = gui.create(ChatUtils.color("&lHarvester Hoe"), 36);
 
         mainPage.noClick();
         mainPage.noShift();
@@ -40,20 +41,7 @@ public class HoeGui {
         ItemStack hoe = p.getItemInHand();
         PersistentDataContainer pdc = hoe.getItemMeta().getPersistentDataContainer();
 
-        mainPage.i(11, makeItemStack(Material.REDSTONE_BLOCK, "&b&lLaser", main.getLaserKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getLaserKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 100" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
-        mainPage.i(12, makeItemStack(Material.SCULK_SENSOR, "&b&lNight Fall", main.getNightFallKey(), "&7Chance to collect wither roses", "", "&b&lCurrent Level&7: " + pdc.get(main.getNightFallKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 500" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
-        mainPage.i(13, makeItemStack(Material.DIAMOND_HOE, "&b&lAutosell", main.getAutoSellKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getAutoSellKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 1" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
-        mainPage.i(14, makeItemStack(Material.MAGMA_BLOCK, "&b&lMagma Stomp", main.getMagmaStompKey(), "&7Spawns a magma that crushes crops", "", "&b&lCurrent Level&7: " + pdc.get(main.getMagmaStompKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 200" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
-        mainPage.i(15, makeItemStack(Material.ARROW, "&b&lArrow Rain", main.getArrowRainKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getArrowRainKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 500" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
-        mainPage.i(20, makeItemStack(Material.GOLD_BLOCK, "&b&lMoney Pouch", main.getMoneyPouchKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getMoneyPouchKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 500" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
-        mainPage.i(21, makeItemStack(Material.EXPERIENCE_BOTTLE, "&b&lXP Pouch", main.getXpPouchKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getXpKey(), PersistentDataType.INTEGER), "&b&lMax Level&7: 500" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
-        mainPage.i(22, makeItemStack(Material.EMERALD_BLOCK, "&b&lGem Pouch", main.getGemPouchKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getGemPouchKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 500" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
-        mainPage.i(23, makeItemStack(Material.TRIPWIRE_HOOK, "&b&lKey Finder", main.getKeyFinderKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getKeyFinderKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 500" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
-        mainPage.i(24, makeItemStack(Material.SPAWNER, "&b&lSpawner Finder", main.getSpawnerFinderKey(),"&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getSpawnerFinderKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 500" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))" ));
-
-        mainPage.i(49, new ItemStack(Material.BOOK));
-
-        mainPage.fill(Material.GRAY_STAINED_GLASS_PANE);
+        fillGui(mainPage, pdc);
 
         mainPage.onClick(e -> {
            ItemStack clicked = e.getCurrentItem();
@@ -73,13 +61,20 @@ public class HoeGui {
                    //they have the right level
                    int price = (int) this.getClass().getDeclaredField(upgradeKey.getKey() + "Price").get(this);
                    if(gems >= price) {
+                       if((hoeContainer.get(upgradeKey, PersistentDataType.INTEGER) + 1) > (int) this.getClass().getDeclaredField(upgradeKey.getKey() + "Max").get(this)) {
+                           p.sendMessage(ChatUtils.color("&f&lSkySurge &7| This enchant is already max level!"));
+                            return;
+                       }
                        main.getGemUtils().removeGems(p, price);
 
                        int newLevel = hoeContainer.get(upgradeKey, PersistentDataType.INTEGER) + 1;
                        hoeContainer.set(upgradeKey, PersistentDataType.INTEGER, newLevel);
                        im.setLore(generateLore(hoe));
-                       System.out.println(hoeContainer.getKeys().toString());
                        hoe.setItemMeta(im);
+
+                       mainPage.clear();
+                       fillGui(mainPage, hoe.getItemMeta().getPersistentDataContainer());
+
                        p.sendMessage(ChatUtils.color("&f&lSkySurge &7| You have purchased 1 level of " + StringUtils.capitalize(upgradeKey.getKey())));
                    } else {
                        p.sendMessage(ChatUtils.color("&f&lSKySurge &7| Sorry! You do not have enough gems to purchase this enchant!"));
@@ -119,6 +114,24 @@ public class HoeGui {
         stack.setItemMeta(itemMeta);
 
         return stack;
+    }
+
+    public Gui.NoobPage fillGui(Gui.NoobPage mainPage, PersistentDataContainer pdc) {
+        mainPage.i(11, makeItemStack(Material.REDSTONE_BLOCK, "&b&lLaser", main.getLaserKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getLaserKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 100" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
+        mainPage.i(12, makeItemStack(Material.SCULK_SENSOR, "&b&lNight Fall", main.getNightFallKey(), "&7Chance to collect wither roses", "", "&b&lCurrent Level&7: " + pdc.get(main.getNightFallKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 200" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
+        mainPage.i(13, makeItemStack(Material.DIAMOND_HOE, "&b&lAutosell", main.getAutoSellKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getAutoSellKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 1" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
+        mainPage.i(14, makeItemStack(Material.MAGMA_BLOCK, "&b&lMagma Stomp", main.getMagmaStompKey(), "&7Spawns a magma that crushes crops", "", "&b&lCurrent Level&7: " + pdc.get(main.getMagmaStompKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 200" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
+        mainPage.i(15, makeItemStack(Material.ARROW, "&b&lArrow Rain", main.getArrowRainKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getArrowRainKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 500" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
+        mainPage.i(20, makeItemStack(Material.GOLD_BLOCK, "&b&lMoney Pouch", main.getMoneyPouchKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getMoneyPouchKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 500" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
+        mainPage.i(21, makeItemStack(Material.EXPERIENCE_BOTTLE, "&b&lXP Pouch", main.getXpPouchKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getXpKey(), PersistentDataType.INTEGER), "&b&lMax Level&7: 500" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
+        mainPage.i(22, makeItemStack(Material.EMERALD_BLOCK, "&b&lGem Pouch", main.getGemPouchKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getGemPouchKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 500" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
+        mainPage.i(23, makeItemStack(Material.TRIPWIRE_HOOK, "&b&lKey Finder", main.getKeyFinderKey(), "&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getKeyFinderKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 500" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))"));
+        mainPage.i(24, makeItemStack(Material.SPAWNER, "&b&lSpawner Finder", main.getSpawnerFinderKey(),"&7Chance to destroy cane in a row", "", "&b&lCurrent Level&7: " + pdc.get(main.getSpawnerFinderKey(), PersistentDataType.INTEGER) , "&b&lMax Level&7: 500" , "", "&7&o(( Left-click to upgrade))", "&7&o(( Right-click to disable ))" ));
+
+
+        mainPage.fill(Material.GRAY_STAINED_GLASS_PANE);
+
+        return mainPage;
     }
 
     public List<String> generateLore(ItemStack stack) {

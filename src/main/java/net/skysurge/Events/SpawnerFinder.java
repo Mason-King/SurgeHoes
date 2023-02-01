@@ -15,6 +15,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SpawnerFinder implements Listener {
@@ -36,7 +37,6 @@ public class SpawnerFinder implements Listener {
                 if (hoe.getItemMeta().getPersistentDataContainer().get(main.getHarvesterKey(), PersistentDataType.STRING).equals("true")) {
                     int spawnerFinder = hoe.getItemMeta().getPersistentDataContainer().get(main.getSpawnerFinderKey(), PersistentDataType.INTEGER);
                     if (spawnerFinder == 0) return;
-
 
                     int chance = ThreadLocalRandom.current().nextInt(100) + 1;
 

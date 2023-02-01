@@ -1,5 +1,6 @@
 package net.skysurge.Events;
 
+import net.skysurge.Gui.CaptchaGui;
 import net.skysurge.Gui.HoeGui;
 import net.skysurge.Main;
 import net.skysurge.Utils.ChatUtils;
@@ -23,6 +24,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class BlockBreak implements Listener {
 
@@ -53,13 +55,14 @@ public class BlockBreak implements Listener {
                         int sell = (main.getTask().toSell.containsKey(e.getPlayer().getUniqueId())) ? main.getTask().toSell.get(e.getPlayer().getUniqueId()) + canes.size() : canes.size();
                         main.getTask().toSell.remove(e.getPlayer().getUniqueId());
                         main.getTask().toSell.put(e.getPlayer().getUniqueId(), sell);
-                        System.out.println(sell);
                     } else {
                         //auto sell disabled
                         e.getPlayer().getInventory().addItem(new ItemStack(Material.SUGAR_CANE, canes.size()));
                     }
 
-                     main.getCaptchaGui().makeGui(e.getPlayer());
+                     if(ThreadLocalRandom.current().nextDouble(100) < 1) {
+                         new CaptchaGui(main).makeGui(e.getPlayer());
+                     }
 
                     ItemMeta im = hoe.getItemMeta();
                     PersistentDataContainer pdc = im.getPersistentDataContainer();

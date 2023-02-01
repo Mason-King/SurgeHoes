@@ -55,7 +55,6 @@ public final class Main extends JavaPlugin {
     private NamespacedKey autoSellEnabledKey = new NamespacedKey(this, "autosellEnabled");
 
     private HoeGui hoeGui;
-    private CaptchaGui captchaGui;
     private GemUtils gemUtils;
     private Database db;
 
@@ -91,7 +90,6 @@ public final class Main extends JavaPlugin {
         new HoeCommand(this);
         new BlockBreak(this);
         this.hoeGui = new HoeGui(this);
-        this.captchaGui = new CaptchaGui(this);
         new GemCommand(this);
         this.gemUtils = new GemUtils(this);
 
@@ -258,7 +256,4 @@ public final class Main extends JavaPlugin {
         return task;
     }
 
-    public CaptchaGui getCaptchaGui() {
-        return captchaGui;
-    }
 }

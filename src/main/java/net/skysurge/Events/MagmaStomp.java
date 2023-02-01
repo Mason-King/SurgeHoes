@@ -46,9 +46,10 @@ public class MagmaStomp implements Listener {
 
                     int chance = ThreadLocalRandom.current().nextInt(100) + 1;
 
-                    if (chance <= magmastomp * 0.75) {
+                    if (chance <= magmastomp * 5) {
                         MagmaCube magmaCube = (MagmaCube) e.getPlayer().getLocation().getWorld().spawnEntity(e.getPlayer().getLocation().add(0, 5, 0), EntityType.MAGMA_CUBE);
                         magmaCube.setSize(5);
+                        magmaCube.setTarget(null);
                         UUID u = UUID.randomUUID();
                         magmaCube.setMetadata("id", new FixedMetadataValue(main, u.toString()));
 
@@ -56,6 +57,7 @@ public class MagmaStomp implements Listener {
                             @Override
                             public void run() {
                                 magmaCube.remove();
+                                if(locations.get(u) == null) return;
                                 for(Location l : locations.get(u)) {
                                     if(l.getBlock().getType().equals(Material.SUGAR_CANE)) {
                                         List<Block> blocks = getBlocks(l.getBlock());
