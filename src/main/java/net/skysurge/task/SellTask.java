@@ -1,6 +1,5 @@
 package net.skysurge.task;
 
-import net.minecraft.network.chat.IChatBaseComponent;
 import net.skysurge.Main;
 import net.skysurge.Utils.ChatUtils;
 import org.bukkit.Bukkit;
