@@ -11,6 +11,7 @@ import net.skysurge.Gui.HoeGui;
 import net.skysurge.Storage.Database;
 import net.skysurge.Storage.SQLite;
 import net.skysurge.Utils.GemUtils;
+import net.skysurge.Utils.SurgeHoesExpansion;
 import net.skysurge.task.SellTask;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -89,8 +90,9 @@ public final class Main extends JavaPlugin {
         new NightFall(this);
         new HoeCommand(this);
         new BlockBreak(this);
-        this.hoeGui = new HoeGui(this);
         new GemCommand(this);
+        new SurgeHoesExpansion(this);
+        this.hoeGui = new HoeGui(this);
         this.gemUtils = new GemUtils(this);
 
         this.task.runTaskTimer(this, 0, 20 * 60 * 2);

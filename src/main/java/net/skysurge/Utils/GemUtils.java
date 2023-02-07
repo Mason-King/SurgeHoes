@@ -3,6 +3,8 @@ package net.skysurge.Utils;
 import net.skysurge.Main;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class GemUtils {
 
     private Main main;
@@ -14,6 +16,13 @@ public class GemUtils {
     public int getGems(Player p) {
         if(this.main.getDb().exists("playerData", "uuid", p.getUniqueId().toString())) {
             return main.getDb().getInt("playerData", "uuid", p.getUniqueId().toString(), "gems");
+        }
+        return 0;
+    }
+
+    public int getGems(UUID uuid) {
+        if(this.main.getDb().exists("playerData", "uuid", uuid.toString())) {
+            return main.getDb().getInt("playerData", "uuid", uuid.toString(), "gems");
         }
         return 0;
     }
